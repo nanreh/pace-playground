@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from 'react'
+import React from 'react'
 import { RaceDistance } from '../defy/models'
 import Select from '../defy/components/Select'
 
