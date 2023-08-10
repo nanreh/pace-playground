@@ -7,7 +7,6 @@ import Toolbar from './defy/components/Toolbar';
 import DistanceTimeSplits from './components/DistanceTimeSplits'
 import history from './defy/history';
 import { useQueryParams, NumberParam, StringParam, NumericObjectParam } from 'use-query-params';
-import { isNumber } from 'util';
 
 const theme = {
   colors: {
@@ -63,7 +62,7 @@ const App: React.FC = () => {
 
   const [units, setUnits] = useState<Units>((u === 'mi' || u === 'km') ? u : 'mi')
   const [distance, setDistance] = useState((d && distances[d]) ? distances[d] : distances['Marathon'])
-  const [totalTime, setTotalTime] = useState<number>((isNumber(t) && t > 0 ? t : distance.defaultTime)) // seconds
+  const [totalTime, setTotalTime] = useState<number>((t && t > 0 ? t : distance.defaultTime)) // seconds
   const [intervals, setIntervals] = useState(() => {
     let fixed = undefined !== f ? f : {};
     let map = new Map(Object.keys(fixed).map(k => [Number(k), fixed[k] as number]));

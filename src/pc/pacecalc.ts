@@ -1,5 +1,4 @@
 import { Units, RaceDistance, rate, time, metersPerMile } from '../defy/models'
-import { Interval } from '../components/Interval';
 
 interface Interval {
     num: number,
