@@ -1,9 +1,6 @@
 import React, { useEffect, useCallback, useRef } from 'react';
-import styled from 'styled-components';
 import { FaPlus, FaMinus } from 'react-icons/fa'
 import { IconContext } from 'react-icons'
-import { useContext } from 'react';
-import { ThemeContext } from 'styled-components';
 
 type plusOrMinus = 'plus' | 'minus';
 
@@ -13,27 +10,9 @@ interface Props {
     type: plusOrMinus,
 }
 
-const Root = styled.div`
-    background-color: ${props => props.theme.colors.buttonBg};
-    //border: 2px solid #111;
-    border-radius: 50%;
-    padding: 3px;
-    &:hover {
-        //background-color: ${props => props.theme.colors.silver};
-        cursor: pointer;
-    }
-    & > svg {
-        width: 2em;
-        height: 2em;
-        display: block;
-        margin-left: auto;
-        margin-right: auto;
-    }
-`
-
 let timerID: number | undefined;
 
-const LongPressButton: React.FC<Props> = ({ activeCb, doneCb, type }) => {
+const LongPressButton = ({ activeCb, doneCb, type }: Props) => {
 
     const timer = useCallback(
         () => {
@@ -73,14 +52,13 @@ const LongPressButton: React.FC<Props> = ({ activeCb, doneCb, type }) => {
         }
     }, []);
 
-    const themeContext = useContext(ThemeContext);
     return (
-        <IconContext.Provider value={{ color: themeContext.colors.buttonIcons, size: "1.5em" }}>
-            <Root ref={innerRef} onMouseDown={pressingDown} onMouseUp={notPressingDown} onMouseLeave={notPressingDown}
+        <IconContext.Provider value={{ color: "#fed766", size: "1.5em" }}>
+            <div className="long-press-button-panel" ref={innerRef} onMouseDown={pressingDown} onMouseUp={notPressingDown} onMouseLeave={notPressingDown}
                 onTouchStart={pressingDown} onTouchEnd={notPressingDown}>
                 {type === 'plus' && <FaPlus style={{ verticalAlign: 'middle' }} />}
                 {type === 'minus' && <FaMinus style={{ verticalAlign: 'middle' }} />}
-            </Root>
+            </div>
         </IconContext.Provider>
     )
 }

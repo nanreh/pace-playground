@@ -2,46 +2,10 @@ import React, { useState, useRef } from 'react';
 import { Units, RaceDistance, distances } from './defy/models'
 import { Interval } from './components/Interval';
 import { Intervals, buildIntervals } from './pc/pacecalc';
-import styled, { ThemeProvider } from 'styled-components';
 import Toolbar from './defy/components/Toolbar';
 import DistanceTimeSplits from './components/DistanceTimeSplits'
 import history from './defy/history';
 import { useQueryParams, NumberParam, StringParam, NumericObjectParam } from 'use-query-params';
-
-const theme = {
-  colors: {
-    bodyBg: '#61c9a8', // green
-    controlsBg: '#ada8b6', // silver
-    controlsTitle: '#424242', // onyx
-    buttonBg: '#424242', // onyx
-    buttonIcons: '#fed766', // yellow
-    buttonTxt: '#fed766', // yellow
-    buttonSelectedBorder: '#FF101F', // red
-    speedBarBg: '#fed766', // yellow
-    intervalBg: '#ada8b6', // silver
-    intervalsBg: '#61c9a8', // green
-  },
-  fonts: ["sans-serif", "Roboto"],
-  fontSizes: {
-    small: "1em",
-    medium: "2em",
-    large: "3em"
-  },
-  screenSizes: {
-    sm: "576px",
-    md: "768px",
-    lg: "992px",
-    xl: "1200px",
-  }
-}
-
-const IntervalsView = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background-color: ${props => props.theme.colors.intervalsBg};
-  padding: 5px;
-`
 
 function getInitialIntervals(distance: RaceDistance, totalTime: number, units: Units, fixed: Map<number, number>): Intervals {
   return buildIntervals(distance, totalTime, units, fixed);
@@ -146,10 +110,10 @@ const App: React.FC = () => {
   }
 
   return (
-    <ThemeProvider theme={theme}>
+    <>
       <Toolbar units={units} intervals={intervals} />
       <DistanceTimeSplits units={units} unitsChangeHandler={onUnitsChanged} distance={distance} intervals={intervals} timeChangeHandler={onTimeChanged} distanceChangeHandler={onDistanceChanged} />
-      <IntervalsView>
+      <div className="intervals-view">
         {intervals.intervals.map(i =>
           <Interval
             key={i.num}
@@ -166,8 +130,8 @@ const App: React.FC = () => {
             unlock={intervalUnlock}
             units={units}
           />)}
-      </IntervalsView>
-    </ThemeProvider>
+      </div>
+    </>
   );
 }
 

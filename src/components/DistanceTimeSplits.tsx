@@ -1,6 +1,5 @@
 import React from 'react';
 import UnitsButtons from '../defy/components/UnitsButtons'
-import styled from 'styled-components'
 import DistancePicker from './DistancePicker';
 import TimePicker from './TimePicker';
 import { Units, RaceDistance, distances } from '../defy/models'
@@ -15,33 +14,16 @@ interface Props {
     distanceChangeHandler: (p: RaceDistance) => void,
 }
 
-const Title = styled.h3`
-    display: inline;
-    margin: 0 .4em;
-`
-
-const Root = styled.div`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: wrap;
-    margin: 1em 0 5px 0;
-    color: ${(props) => props.theme.colors.controlsTitle};
-    @media (max-width: ${(props) => props.theme.screenSizes.lg}) {
-        flex-direction: column;
-      }
-`
-
-const DistanceTimeSplits: React.FC<Props> = ({ units, unitsChangeHandler, distance, intervals, timeChangeHandler, distanceChangeHandler }) => {
+const DistanceTimeSplits = ({ units, unitsChangeHandler, distance, intervals, timeChangeHandler, distanceChangeHandler }: Props) => {
     return (
         <>
-            <Root>
+            <div className="distance-time-splits">
                 <DistancePicker availableDistances={Object.values(distances)} selectedDistance={distance} changeHandler={distanceChangeHandler} />
-                <Title>in</Title>
+                <h3>in</h3>
                 <TimePicker selectedTime={intervals.totalTime} changeHandler={timeChangeHandler} />
-                <Title>with splits in</Title>
+                <h3>with splits in</h3>
                 <UnitsButtons units={units} unitsChangeHandler={unitsChangeHandler} />
-            </Root>
+            </div>
         </>
     )
 }

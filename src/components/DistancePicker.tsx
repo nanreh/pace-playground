@@ -1,6 +1,5 @@
 import React from 'react'
 import { RaceDistance } from '../defy/models'
-import Select from '../defy/components/Select'
 
 interface Props {
     availableDistances: Array<RaceDistance>,
@@ -8,7 +7,7 @@ interface Props {
     changeHandler: (p: RaceDistance) => void,
 }
 
-const DistancePicker: React.FC<Props> = ({ availableDistances, selectedDistance, changeHandler }) => {
+const DistancePicker = ({ availableDistances, selectedDistance, changeHandler }: Props) => {
 
     const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
         const newSelection = availableDistances.find(p => p.name === event.target.value as string);
@@ -24,9 +23,9 @@ const DistancePicker: React.FC<Props> = ({ availableDistances, selectedDistance,
     ));
 
     return (
-        <Select value={selectedDistance.name} onChange={handleChange}>
+        <select value={selectedDistance.name} onChange={handleChange}>
             {options}
-        </Select>
+        </select>
     )
 }
 

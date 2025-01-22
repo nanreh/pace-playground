@@ -1,8 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
 import { IconContext } from 'react-icons'
-import { useContext } from 'react';
-import { ThemeContext } from 'styled-components';
 import { Radio } from './Radios';
 import { Units } from '../models'
 
@@ -11,14 +8,7 @@ interface Props {
     unitsChangeHandler: (u: Units) => void,
 }
 
-const Root = styled.div`
-  display: flex;
-  justify-content: center;
-  font-size: 18px;
-`;
-
-const UnitsButtons: React.FC<Props> = ({ units, unitsChangeHandler }) => {
-    const themeContext = useContext(ThemeContext);
+const UnitsButtons = ({ units, unitsChangeHandler }: Props) => {
 
     const changeCb = (event: React.FormEvent<HTMLInputElement>) => {
         const newSelection = "mi" === event.currentTarget.value ? 'mi' : 'km';
@@ -26,8 +16,8 @@ const UnitsButtons: React.FC<Props> = ({ units, unitsChangeHandler }) => {
     }
 
     return (
-        <IconContext.Provider value={{ color: themeContext.colors.buttonIcons }}>
-            <Root>
+        <IconContext.Provider value={{ color: "#fed766" }}>
+            <div className="unit-buttons-panel">
                 <Radio
                     id="radio-mi"
                     name="radio-units"
@@ -44,7 +34,7 @@ const UnitsButtons: React.FC<Props> = ({ units, unitsChangeHandler }) => {
                     changeCb={changeCb}
                     currentValue={units}
                 />
-            </Root>
+            </div>
         </IconContext.Provider>
     )
 }

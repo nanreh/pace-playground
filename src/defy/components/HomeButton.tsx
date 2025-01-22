@@ -1,37 +1,15 @@
 import React from 'react';
-import styled from 'styled-components';
 import { FaHome } from 'react-icons/fa'
 import { IconContext } from 'react-icons'
-import { useContext } from 'react';
-import { ThemeContext } from 'styled-components';
 
-
-const Root = styled.div`
-    border-radius: 50%;
-    padding: 3px;
-    &:hover {
-        cursor: pointer;
-    }
-`
-
-const Link = styled.a`
-& > svg {
-    width: 2em;
-    height: 2em;
-    display: block;
-    margin-left: -2px;
-    margin-right: auto;
-}
-`
-const HomeButton: React.FC = () => {
-    const themeContext = useContext(ThemeContext);
+const HomeButton = () => {
     return (
-        <IconContext.Provider value={{ color: themeContext.colors.buttonIcons }}>
-            <Root>
-                <Link href="/">
+        <IconContext.Provider value={{ color: "#fed766" }}>
+            <div className="home-button-panel">
+                <a href="/">
                     <FaHome style={{ verticalAlign: 'middle' }} />
-                </Link>
-            </Root>
+                </a>
+            </div>
         </IconContext.Provider>
     )
 }

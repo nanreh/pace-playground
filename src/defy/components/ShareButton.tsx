@@ -1,31 +1,9 @@
 import React from 'react';
-import styled from 'styled-components';
 import { IoMdShare } from 'react-icons/io'
 import { IconContext } from 'react-icons'
-import { useContext } from 'react';
-import { ThemeContext } from 'styled-components';
 import copy from "copy-to-clipboard";
 
-const Root = styled.div`
-    // background-color: ${props => props.theme.colors.buttonBg};
-    //border: 2px solid #111;
-    border-radius: 50%;
-    padding: 3px;
-    &:hover {
-        //background-color: ${props => props.theme.colors.buttonBg};
-        cursor: pointer;
-    }
-    & > svg {
-        width: 2em;
-        height: 2em;
-        display: block;
-        margin-left: -2px;
-        margin-right: auto;
-    }
-`
-
-const ShareButton: React.FC = () => {
-    const themeContext = useContext(ThemeContext);
+const ShareButton = () => {
 
     const shareLink = (): void => {
         let newVariable: any;
@@ -47,10 +25,10 @@ const ShareButton: React.FC = () => {
     }
 
     return (
-        <IconContext.Provider value={{ color: themeContext.colors.buttonIcons }}>
-            <Root onClick={shareLink}>
+        <IconContext.Provider value={{ color: "#fed766" }}>
+            <div className="share-button-panel" onClick={shareLink}>
                 <IoMdShare style={{ verticalAlign: 'middle' }} />
-            </Root>
+            </div>
         </IconContext.Provider>
     )
 }

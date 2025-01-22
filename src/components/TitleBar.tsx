@@ -1,6 +1,5 @@
 import React from 'react';
 import { RaceDistance } from '../defy/models';
-import styled from 'styled-components';
 import { humanizeDuration } from '../defy/models'
 
 interface Props {
@@ -8,14 +7,9 @@ interface Props {
     time: number,
 }
 
-const H2 = styled.h2`
-    width: 100%;
-    text-align: center;
-`
-
-const TitleBar: React.FC<Props> = ({ distance, time }) => {
+const TitleBar = ({ distance, time }: Props) => {
     return (
-        <H2>{distance.name} in {humanizeDuration(time, { leadingZeroes: false, padHours: false, padMinutes: true, padSeconds: true })}</H2>
+        <h2 className="titlebar">{distance.name} in {humanizeDuration(time, { leadingZeroes: false, padHours: false, padMinutes: true, padSeconds: true })}</h2>
     )
 }
 
