@@ -1,5 +1,9 @@
 :root {
   --body-bg-color: #61c9a8;
+  --link-color: #FF101F;
+  --highlight-color: #fed766;
+  --card-color: #D6D5DA;
+  --primary-color-light: #fed766;
   --controls-bg-color: #ada8b6;
   --controls-title-color: #424242;
   --button-bg-color: #424242;
@@ -20,12 +24,28 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+a {
+  color: var(--link-color);
+  text-decoration: none;
+  background-color: transparent;
+  &:hover {
+    color: var(--highlight-color);
+  }
+}
+
 h1, h2, h3, h4, h5, h6,
 .h1, .h2, .h3, .h4, .h5, .h6 {
   margin-bottom: 1rem;
   font-weight: 500;
   line-height: 1.2;
 }
+
+h1, .h1 { font-size: 2.5rem }
+h2, .h2 { font-size: 2rem }
+h3, .h3 { font-size: 1.75rem }
+h4, .h4 { font-size: 1.5rem }
+h5, .h5 { font-size: 1.25rem }
+h6, .h6 { font-size: 1rem }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
@@ -55,16 +75,6 @@ select {
     }
 }
 
-.app {
-  width: 100%;
-  padding-right: 15px;
-  padding-left: 15px;
-  margin-top: 10px;
-  margin-right: auto;
-  margin-left: auto;
-  margin-bottom: 2em;
-}
-
 @media (min-width: 576px) {
   .app { max-width: 540px; }
 }
@@ -76,6 +86,55 @@ select {
 }
 @media (min-width: 1200px) {
   .app { max-width: 1140px; }
+}
+
+a:link {
+  color: var(--link-color);
+}
+a:visited {
+  color: var(--link-color);
+}
+a:hover {
+  color: var(--highlight-color);
+}
+a:active {
+  color: var(--link-color);
+}
+
+.about-container {
+  background-color: var(--card-color); 
+  border: 3px solid var(--primary-color-light);
+  border-radius: 5px;
+  padding: .5em 1em 1em 1em;
+  font-weight: 400;
+  color: var(--text-color);
+  margin: 0 0 1em 0;
+  hr {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    border: 0;
+    border-top: 1px solid rgba(0,0,0,.1);
+  }
+  p {
+    margin-top: 0;
+    margin-bottom: 1rem;  
+  }
+  .title {
+    font-size: 2em;
+    margin-top: .2em;
+    margin-bottom: .2em;
+    font-weight: 700;
+  }
+}
+
+.app {
+  width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-top: 10px;
+  margin-right: auto;
+  margin-left: auto;
+  margin-bottom: 2em;
 }
 
 .intervals-view {
@@ -372,6 +431,10 @@ select {
     min-height: .75em;
     margin: 4px 0 0 0
 
+}
+
+.footer {
+  font-size: .7em;
 }
 
     /* sm: "576px",

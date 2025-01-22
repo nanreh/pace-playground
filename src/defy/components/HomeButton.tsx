@@ -6,7 +6,7 @@ const HomeButton = () => {
     return (
         <IconContext.Provider value={{ color: "#fed766" }}>
             <div className="home-button-panel">
-                <a href="/">
+                <a href="./">
                     <FaHome style={{ verticalAlign: 'middle' }} />
                 </a>
             </div>

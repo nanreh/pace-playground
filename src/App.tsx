@@ -11,7 +11,7 @@ function getInitialIntervals(distance: RaceDistance, totalTime: number, units: U
   return buildIntervals(distance, totalTime, units, fixed);
 }
 
-const App: React.FC = () => {
+const App = () => {
   const paramsFromIntervals = (intervals: Intervals) => {
     let fixed: { [key: string]: number } = {}
     intervals.fixed.forEach((value: number, key: number) => fixed[key] = value);
@@ -22,7 +22,12 @@ const App: React.FC = () => {
       f: fixed,
     }
   }
-  const [{ u, d, t, f }, setq] = useQueryParams({ u: StringParam, d: StringParam, t: NumberParam, f: NumericObjectParam });
+  const [{ u, d, t, f }, setq] = useQueryParams({
+    u: StringParam,
+    d: StringParam,
+    t: NumberParam,
+    f: NumericObjectParam 
+  });
 
   const [units, setUnits] = useState<Units>((u === 'mi' || u === 'km') ? u : 'mi')
   const [distance, setDistance] = useState((d && distances[d]) ? distances[d] : distances['Marathon'])
@@ -111,7 +116,8 @@ const App: React.FC = () => {
 
   return (
     <>
-      <Toolbar units={units} intervals={intervals} />
+      {/* <Toolbar units={units} intervals={intervals} /> */}
+      <Toolbar />
       <DistanceTimeSplits units={units} unitsChangeHandler={onUnitsChanged} distance={distance} intervals={intervals} timeChangeHandler={onTimeChanged} distanceChangeHandler={onDistanceChanged} />
       <div className="intervals-view">
         {intervals.intervals.map(i =>

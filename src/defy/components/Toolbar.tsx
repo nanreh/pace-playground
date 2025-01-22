@@ -12,7 +12,8 @@ interface Props {
     units: Units,
 }
 
-const Toolbar = ({ intervals, units }: Props) => {
+// const Toolbar = ({ intervals, units }: Props) => {
+const Toolbar = () => {
     return (
         <>
             <div className="tools">
@@ -26,7 +27,7 @@ const Toolbar = ({ intervals, units }: Props) => {
                 </div>
                 <div className="tools-end">
                     <ShareButton />
-                    <ExportButton intervals={intervals} units={units} />
+                    {/* <ExportButton intervals={intervals} units={units} /> */}
                 </div>
             </div>
         </>
