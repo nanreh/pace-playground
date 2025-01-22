@@ -1,14 +1,15 @@
 import React from 'react';
 import { FaHome } from 'react-icons/fa'
 import { IconContext } from 'react-icons'
+import { Link } from "react-router-dom";
 
 const HomeButton = () => {
     return (
         <IconContext.Provider value={{ color: "#fed766" }}>
             <div className="home-button-panel">
-                <a href="./">
+                <Link to="/">
                     <FaHome style={{ verticalAlign: 'middle' }} />
-                </a>
+                </Link>
             </div>
         </IconContext.Provider>
     )
