@@ -1,4 +1,4 @@
-import { Units, RaceDistance, rate, time, metersPerMile } from '../defy/models'
+import { Units, RaceDistance, rate, time, metersPerMile } from './models'
 
 interface Interval {
     num: number,
@@ -86,7 +86,7 @@ export function buildIntervals(distance: RaceDistance, totalTime: number, units:
     const totalFreeDistance = getTotalFreeDistance(intervalDistances, fixedIntervals);
 
     // Make sure the keys make sense, remove any bad ones.
-    fixedIntervals.forEach((v, k) => {
+    fixedIntervals.forEach((_, k) => {
         if (k >= intervalDistances.length) {
             console.log("REMOVING BAD KEY: " + k);
             fixedIntervals.delete(k);

@@ -1,6 +1,6 @@
 import { Intervals } from "./pacecalc";
-import { Units } from '../defy/models';
-import { humanizeDuration, humanizeDistance } from '../defy/models'
+import { Units } from './models';
+import { humanizeDuration, humanizeDistance } from './models'
 
 export function toCsv(intervals: Intervals, units: Units): string {
 
@@ -8,7 +8,7 @@ export function toCsv(intervals: Intervals, units: Units): string {
         ["Distance", "Time", "Split Pace"],
     ];
 
-    intervals.intervals.forEach((interval, idx) => {
+    intervals.intervals.forEach((interval, _) => {
         rows.push(
             [
                 humanizeDistance(interval.cumulativeDistance, units),

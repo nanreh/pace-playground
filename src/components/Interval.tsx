@@ -1,8 +1,6 @@
-import React from 'react';
-import styled from 'styled-components'
-import { humanizeDuration, humanizeDistance } from '../defy/models'
-import { Units } from '../defy/models'
-import LongPressButton from '../defy/components/LongPressButton'
+import { humanizeDuration, humanizeDistance } from '../pc/models'
+import { Units } from '../pc/models'
+import LongPressButton from './LongPressButton'
 import LockButton from './LockButton'
 
 interface Props {
@@ -20,65 +18,22 @@ interface Props {
     units: Units,
 }
 
-interface SpeedMeterProps {
-    time: number,
-    slowestInterval: number,
-}
-
-const Root = styled.div<Props>`
-    display: grid;
-    grid-template-columns: 3em auto 4em 3em 3em;
-    justify-items: center;
-    align-items: center;
-    background-color: ${(props) => props.theme.colors.intervalBg};
-    width: 100%;
-    min-width: 30%;
-    margin: 5px;
-    padding: 5px;
-    border-radius: 5px;
-`
-
-const Title = styled.div`
-    color: ${(props) => props.theme.colors.onyx};
-    font-size: 1em;
-    & > button { display: inline }
-    & > h2 {
-        color: ${(props) => props.theme.colors.controlsTitle};
-        display: inline
-    }
-    @media (max-width: ${(props) => props.theme.screenSizes.md}) {
-        & > h2 { font-size: 1.1em; }
-    }
-`
-
-const SpeedMeter = styled.div<SpeedMeterProps>`
-    grid-column-start: 1;
-    grid-column-end: 6;
-    justify-self: start;
-    align-self: end;
-    background-color: ${(props) => props.theme.colors.speedBarBg};
-    min-height: .75em;
-    width: ${(props) => ((props.time / props.slowestInterval) * 100).toFixed(2) + '%'};
-    margin: 4px 0 0 0
-`
-
-export const Interval: React.FC<Props> = ({ num, time, cumulativeTime, cumulativeDistance, distance, slowestInterval, locked, faster, slower, unlock, done, units }) => {
-    // console.log(`${num} => ${time}`);
+export const Interval = ({ num, time, cumulativeTime, cumulativeDistance, slowestInterval, locked, faster, slower, unlock, done, units } : Props) => { // console.log(`${num} => ${time}`);
 
     const renderOpts = { leadingZeroes: false, padHours: false, padMinutes: true, padSeconds: true };
     return (
-        <Root num={num} time={time} cumulativeTime={cumulativeTime} cumulativeDistance={cumulativeDistance} distance={distance} slowestInterval={slowestInterval} locked={locked} faster={faster} slower={slower} done={done} unlock={unlock} units={units}>
+        <div className="interval">
             <LongPressButton activeCb={() => faster(num)} doneCb={done} type="minus" />
-            <Title>
+            <div className="interval-title">
                 <h2>{humanizeDistance(cumulativeDistance, units)} in {humanizeDuration(cumulativeTime, renderOpts)}</h2>
-            </Title>
-            <Title>
+            </div>
+            <div className="interval-title">
                 <h2>{humanizeDuration(time, { leadingZeroes: false, padHours: false, padMinutes: false, padSeconds: true })}</h2>
-            </Title>
+            </div>
             {locked && <LockButton unlockCb={() => unlock(num)} />}
             {!locked && <p></p>}
             <LongPressButton activeCb={() => slower(num)} doneCb={done} type="plus" />
-            <SpeedMeter time={time} slowestInterval={slowestInterval} />
-        </Root>
+            <div className="speed-meter" style={{ width: ((time / slowestInterval) * 100).toFixed(2) + '%'  }} />
+        </div>
     )
 }

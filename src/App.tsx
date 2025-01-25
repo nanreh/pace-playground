@@ -1,53 +1,17 @@
 import React, { useState, useRef } from 'react';
-import { Units, RaceDistance, distances } from './defy/models'
+import { Units, RaceDistance, distances } from './pc/models'
 import { Interval } from './components/Interval';
 import { Intervals, buildIntervals } from './pc/pacecalc';
-import styled, { ThemeProvider } from 'styled-components';
-import Toolbar from './defy/components/Toolbar';
 import DistanceTimeSplits from './components/DistanceTimeSplits'
-import history from './defy/history';
+import ExportShare from './components/ExportShare';
+import history from './pc/history';
 import { useQueryParams, NumberParam, StringParam, NumericObjectParam } from 'use-query-params';
-
-const theme = {
-  colors: {
-    bodyBg: '#61c9a8', // green
-    controlsBg: '#ada8b6', // silver
-    controlsTitle: '#424242', // onyx
-    buttonBg: '#424242', // onyx
-    buttonIcons: '#fed766', // yellow
-    buttonTxt: '#fed766', // yellow
-    buttonSelectedBorder: '#FF101F', // red
-    speedBarBg: '#fed766', // yellow
-    intervalBg: '#ada8b6', // silver
-    intervalsBg: '#61c9a8', // green
-  },
-  fonts: ["sans-serif", "Roboto"],
-  fontSizes: {
-    small: "1em",
-    medium: "2em",
-    large: "3em"
-  },
-  screenSizes: {
-    sm: "576px",
-    md: "768px",
-    lg: "992px",
-    xl: "1200px",
-  }
-}
-
-const IntervalsView = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background-color: ${props => props.theme.colors.intervalsBg};
-  padding: 5px;
-`
 
 function getInitialIntervals(distance: RaceDistance, totalTime: number, units: Units, fixed: Map<number, number>): Intervals {
   return buildIntervals(distance, totalTime, units, fixed);
 }
 
-const App: React.FC = () => {
+const App = () => {
   const paramsFromIntervals = (intervals: Intervals) => {
     let fixed: { [key: string]: number } = {}
     intervals.fixed.forEach((value: number, key: number) => fixed[key] = value);
@@ -58,13 +22,18 @@ const App: React.FC = () => {
       f: fixed,
     }
   }
-  const [{ u, d, t, f }, setq] = useQueryParams({ u: StringParam, d: StringParam, t: NumberParam, f: NumericObjectParam });
+  const [{ u, d, t, f }, setq] = useQueryParams({
+    u: StringParam,
+    d: StringParam,
+    t: NumberParam,
+    f: NumericObjectParam 
+  });
 
   const [units, setUnits] = useState<Units>((u === 'mi' || u === 'km') ? u : 'mi')
   const [distance, setDistance] = useState((d && distances[d]) ? distances[d] : distances['Marathon'])
   const [totalTime, setTotalTime] = useState<number>((t && t > 0 ? t : distance.defaultTime)) // seconds
   const [intervals, setIntervals] = useState(() => {
-    let fixed = undefined !== f ? f : {};
+    let fixed = (null !==f && undefined !== f) ? f : {};
     let map = new Map(Object.keys(fixed).map(k => [Number(k), fixed[k] as number]));
     let intervals = getInitialIntervals(distance, totalTime, units, map);
     setq(paramsFromIntervals(intervals));
@@ -146,10 +115,10 @@ const App: React.FC = () => {
   }
 
   return (
-    <ThemeProvider theme={theme}>
-      <Toolbar units={units} intervals={intervals} />
+    <>
       <DistanceTimeSplits units={units} unitsChangeHandler={onUnitsChanged} distance={distance} intervals={intervals} timeChangeHandler={onTimeChanged} distanceChangeHandler={onDistanceChanged} />
-      <IntervalsView>
+      <ExportShare units={units} intervals={intervals}></ExportShare>
+      <div className="intervals-view">
         {intervals.intervals.map(i =>
           <Interval
             key={i.num}
@@ -166,8 +135,8 @@ const App: React.FC = () => {
             unlock={intervalUnlock}
             units={units}
           />)}
-      </IntervalsView>
-    </ThemeProvider>
+      </div>
+    </>
   );
 }
 

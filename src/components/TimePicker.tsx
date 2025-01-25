@@ -1,21 +1,10 @@
-import React from 'react';
-import Select from '../defy/components/Select'
-import styled from 'styled-components'
 
 interface Props {
     selectedTime: number, // seconds
     changeHandler: (t: number) => void,
 }
 
-const Root = styled.div`
-    display: flex;
-    display: inline;
-    & > select {
-        display: inline;
-    }
-`
-
-const TimePicker: React.FC<Props> = ({ selectedTime, changeHandler }) => {
+const TimePicker = ({ selectedTime, changeHandler } : Props) => {
     let _hours = Math.floor(selectedTime / (60 * 60));
     let _minutes = Math.floor((selectedTime - _hours * 60 * 60) / 60);
     let _seconds = selectedTime % 60;
@@ -37,17 +26,17 @@ const TimePicker: React.FC<Props> = ({ selectedTime, changeHandler }) => {
     ));
 
     return (
-        <Root>
-            <Select className={"select-css"} value={_hours} onChange={(v) => { _hours = (Number(v.target.value)); handleChange(_hours, _minutes, _seconds); }}>
+        <div className="time-picker">
+            <select className={"select-css"} value={_hours} onChange={(v) => { _hours = (Number(v.target.value)); handleChange(_hours, _minutes, _seconds); }}>
                 {optionsHour}
-            </Select>
-            <Select className={"select-css"} value={_minutes} onChange={(v) => { _minutes = (Number(v.target.value)); handleChange(_hours, _minutes, _seconds); }}>
+            </select>
+            <select className={"select-css"} value={_minutes} onChange={(v) => { _minutes = (Number(v.target.value)); handleChange(_hours, _minutes, _seconds); }}>
                 {optionsMinute}
-            </Select>
-            <Select className={"select-css"} value={_seconds} onChange={(v) => { _seconds = (Number(v.target.value)); handleChange(_hours, _minutes, _seconds); }}>
+            </select>
+            <select className={"select-css"} value={_seconds} onChange={(v) => { _seconds = (Number(v.target.value)); handleChange(_hours, _minutes, _seconds); }}>
                 {optionsSeconds}
-            </Select>
-        </Root>
+            </select>
+        </div>
     )
 }
 
