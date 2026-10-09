@@ -1,6 +1,6 @@
 import { IconContext } from 'react-icons'
 import { Radio } from './Radios';
-import { Units } from '../pc/models'
+import type { Units } from '../pc/models'
 
 interface Props {
     units: Units,

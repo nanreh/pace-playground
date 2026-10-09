@@ -1,7 +1,9 @@
 import React, { useState, useRef } from 'react';
-import { Units, RaceDistance, distances } from './pc/models'
+import type { Units, RaceDistance} from './pc/models';
+import { distances } from './pc/models'
 import { Interval } from './components/Interval';
-import { Intervals, buildIntervals } from './pc/pacecalc';
+import type { Intervals} from './pc/pacecalc';
+import { buildIntervals } from './pc/pacecalc';
 import DistanceTimeSplits from './components/DistanceTimeSplits'
 import ExportShare from './components/ExportShare';
 import history from './pc/history';

@@ -1,5 +1,5 @@
-import { Intervals } from "./pacecalc";
-import { Units } from './models';
+import type { Intervals } from "./pacecalc";
+import type { Units } from './models';
 import { humanizeDuration, humanizeDistance } from './models'
 
 export function toCsv(intervals: Intervals, units: Units): string {

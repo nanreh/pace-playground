@@ -1,4 +1,5 @@
-import { humanizeDuration, renderOpts } from './models';
+import type { renderOpts } from './models';
+import { humanizeDuration } from './models';
 
 const zeroAndPad: renderOpts = { leadingZeroes: true, padHours: true, padMinutes: true, padSeconds: true }
 const zeroNoPad: renderOpts = { leadingZeroes: true, padHours: false, padMinutes: false, padSeconds: false }

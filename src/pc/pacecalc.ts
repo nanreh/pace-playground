@@ -1,4 +1,5 @@
-import { Units, RaceDistance, rate, time, metersPerMile } from './models'
+import type { Units, RaceDistance} from './models';
+import { rate, time, metersPerMile } from './models'
 
 interface Interval {
     num: number,
