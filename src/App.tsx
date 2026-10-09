@@ -55,7 +55,6 @@ const App = () => {
   }, []);
 
   const intervalUnlock = (num: number): void => {
-    //console.log(`UNLOCK: ${num} `);
     const newFixedIntervals = new Map(intervals.fixed);
     newFixedIntervals.delete(num);
     const newIntervals = buildIntervals(distance, totalTime, units, newFixedIntervals);
@@ -65,7 +64,6 @@ const App = () => {
 
   // this is called anynchronously during long press
   const faster = (iNum: number) => {
-    //console.log(`LOCK: ${num} -> ${time} `);
     setIntervals(intervals => {
       const t = intervals.intervals[iNum].time;
       const newFixedIntervals = new Map(intervals.fixed);
@@ -77,7 +75,6 @@ const App = () => {
   };
   // this is called anynchronously during long press
   const slower = (iNum: number) => {
-    //console.log(`LOCK: ${num} -> ${time} `);
     setIntervals(intervals => {
       const t = intervals.intervals[iNum].time;
       const newFixedIntervals = new Map(intervals.fixed);

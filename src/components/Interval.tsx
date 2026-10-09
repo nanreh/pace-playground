@@ -18,7 +18,7 @@ interface Props {
     units: Units,
 }
 
-export const Interval = ({ num, time, cumulativeTime, cumulativeDistance, slowestInterval, locked, faster, slower, unlock, done, units } : Props) => { // console.log(`${num} => ${time}`);
+export const Interval = ({ num, time, cumulativeTime, cumulativeDistance, slowestInterval, locked, faster, slower, unlock, done, units } : Props) => {
 
     const renderOpts = { leadingZeroes: false, padHours: false, padMinutes: true, padSeconds: true };
     return (

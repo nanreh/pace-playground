@@ -9,8 +9,6 @@ const TimePicker = ({ selectedTime, changeHandler } : Props) => {
     const _minutes = Math.floor((selectedTime - _hours * 60 * 60) / 60);
     const _seconds = selectedTime % 60;
 
-    //console.log(`initialHours: ${_hours}, initialMinutes: ${_minutes}, initialSeconds: ${_seconds}`)
-
     const handleChange = (hours: number, minutes: number, seconds: number) => {
         changeHandler(hours * 60 * 60 + minutes * 60 + seconds);
     }

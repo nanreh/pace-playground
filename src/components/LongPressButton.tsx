@@ -25,7 +25,6 @@ const LongPressButton = ({ activeCb, doneCb, type }: Props) => {
 
     function pressingDown(e: React.MouseEvent | React.TouchEvent) {
         timer();
-        console.log(e);
         e.preventDefault();
     }
 

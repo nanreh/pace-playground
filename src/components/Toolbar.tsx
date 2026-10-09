@@ -1,16 +1,7 @@
-// import ShareButton from './ShareButton'
 import HomeButton from './HomeButton'
 import AboutButton from './AboutButton'
-// import { Units } from '../pc/models'
-// import { Intervals } from '../pc/pacecalc';
 import GitHubButton from './GitHubButton';
 
-// interface Props {
-//     intervals: Intervals,
-//     units: Units,
-// }
-
-// const Toolbar = ({ intervals, units }: Props) => {
 const Toolbar = () => {
     return (
         <>

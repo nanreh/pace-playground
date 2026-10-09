@@ -89,7 +89,6 @@ export function buildIntervals(distance: RaceDistance, totalTime: number, units:
     // Make sure the keys make sense, remove any bad ones.
     fixedIntervals.forEach((_, k) => {
         if (k >= intervalDistances.length) {
-            console.log("REMOVING BAD KEY: " + k);
             fixedIntervals.delete(k);
         }
     });
