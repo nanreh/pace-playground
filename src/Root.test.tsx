@@ -79,7 +79,7 @@ describe("Pace Playground", function () {
 
     expect(screen.getByRole("heading", { name: "About" })).toBeVisible();
     expect(screen.getByText("1km in 04:58")).not.toBeVisible();
-    expect(window.location.pathname).toBe("/hacks/paceplayground/about");
+    expect(window.location.pathname).toBe("/hacks/paceplayground/about/");
 
     await userEvent.click(screen.getByRole("link", { name: "Splits" }));
 
@@ -92,6 +92,18 @@ describe("Pace Playground", function () {
     expect(params.get("u")).toBe("km");
     expect(params.get("t")).toBe("12600");
   });
+
+  it.each(["/hacks/paceplayground/about/", "/hacks/paceplayground/about"])(
+    "opens the About page from a direct link to %s",
+    function (path) {
+      renderAt(path + "?d=5K&t=1200&u=km");
+
+      expect(screen.getByRole("heading", { name: "About" })).toBeVisible();
+      // the burst offers the way back, and the query is left alone
+      expect(screen.getByRole("link", { name: "Splits" })).toBeVisible();
+      expect(window.location.search).toBe("?d=5K&t=1200&u=km");
+    },
+  );
 
   it("does not start the splits when the About page is opened directly", function () {
     const { container } = renderAt("/hacks/paceplayground/about");
