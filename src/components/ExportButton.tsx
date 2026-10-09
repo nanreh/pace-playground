@@ -1,22 +1,23 @@
-import type { Units } from '../pc/models'
-import type { Intervals } from '../pc/pacecalc'
+import type { Units } from "../pc/models";
+import type { Intervals } from "../pc/pacecalc";
 import { toCsv, download } from "../pc/csvservice";
 
 interface Props {
-    intervals: Intervals,
-    units: Units,
+  intervals: Intervals;
+  units: Units;
 }
 
 const ExportButton = ({ intervals, units }: Props) => {
+  const exportCsv = (): void => {
+    const csvData = toCsv(intervals, units);
+    download(csvData, "intervals", "csv");
+  };
 
-    const exportCsv = (): void => {
-        const csvData = toCsv(intervals, units);
-        download(csvData, 'intervals', 'csv');
-    }
-
-    return (
-        <button className="app-button" onClick={exportCsv}>Download CSV</button>
-    )
-}
+  return (
+    <button className="app-button" onClick={exportCsv}>
+      Download CSV
+    </button>
+  );
+};
 
 export default ExportButton;
