@@ -1,5 +1,5 @@
 import { humanizeDuration, humanizeDistance } from '../pc/models'
-import { Units } from '../pc/models'
+import type { Units } from '../pc/models'
 import LongPressButton from './LongPressButton'
 import LockButton from './LockButton'
 

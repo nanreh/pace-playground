@@ -26,19 +26,6 @@ export const distances: { [key: string]: RaceDistance } = {
     "50K": { name: '50K', distance: 50000, worldRecord: toSeconds(2, 43, 38), defaultTime: toSeconds(3, 44, 59) }, // 2:43:38
 };
 
-export type Milestone = {
-    name: string,
-    distance: number,
-}
-export const milestones: Milestone[] = [
-    { name: '10K', distance: 10000 },
-    { name: '20K', distance: 20000 },
-    { name: 'Half Marathon', distance: 21097.5 },
-    { name: '30K', distance: 30000 },
-    { name: '40K', distance: 40000 },
-    { name: 'The Wall (20mi)', distance: 20 * metersPerMile }
-]
-
 export function metersToMi(meters: number): number {
     return meters / metersPerMile;
 }
@@ -70,7 +57,7 @@ export const humanizeDuration = function (durationSecs: number, opts: renderOpts
     const minutes = Math.floor((totalSeconds - (hours * 3600)) / 60);
     const seconds = totalSeconds - (hours * 3600) - (minutes * 60);
 
-    let toRender: string[] = [];
+    const toRender: string[] = [];
     if (hours > 0 || opts.leadingZeroes) {
         toRender.push(opts.padHours ? hours.toFixed().padStart(2, '0') : hours.toFixed())
     }

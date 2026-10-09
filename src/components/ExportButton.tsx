@@ -1,5 +1,5 @@
-import { Units } from '../pc/models'
-import { Intervals } from '../pc/pacecalc'
+import type { Units } from '../pc/models'
+import type { Intervals } from '../pc/pacecalc'
 import { toCsv, download } from "../pc/csvservice";
 
 interface Props {

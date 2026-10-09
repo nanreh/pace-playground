@@ -1,5 +1,5 @@
 import React from 'react'
-import { RaceDistance } from '../pc/models'
+import type { RaceDistance } from '../pc/models'
 
 interface Props {
     availableDistances: Array<RaceDistance>,

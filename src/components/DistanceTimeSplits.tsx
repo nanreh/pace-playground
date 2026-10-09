@@ -1,8 +1,9 @@
 import UnitsButtons from './UnitsButtons'
 import DistancePicker from './DistancePicker';
 import TimePicker from './TimePicker';
-import { Units, RaceDistance, distances } from '../pc/models'
-import { Intervals } from '../pc/pacecalc';
+import type { Units, RaceDistance} from '../pc/models';
+import { distances } from '../pc/models'
+import type { Intervals } from '../pc/pacecalc';
 
 interface Props {
     intervals: Intervals,

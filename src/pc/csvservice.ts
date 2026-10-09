@@ -1,5 +1,5 @@
-import { Intervals } from "./pacecalc";
-import { Units } from './models';
+import type { Intervals } from "./pacecalc";
+import type { Units } from './models';
 import { humanizeDuration, humanizeDistance } from './models'
 
 export function toCsv(intervals: Intervals, units: Units): string {
@@ -8,7 +8,7 @@ export function toCsv(intervals: Intervals, units: Units): string {
         ["Distance", "Time", "Split Pace"],
     ];
 
-    intervals.intervals.forEach((interval, _) => {
+    intervals.intervals.forEach((interval) => {
         rows.push(
             [
                 humanizeDistance(interval.cumulativeDistance, units),
@@ -18,7 +18,7 @@ export function toCsv(intervals: Intervals, units: Units): string {
         );
     });
 
-    let csvContent = rows.map(e => e.join(",")).join("\n");
+    const csvContent = rows.map(e => e.join(",")).join("\n");
 
     return csvContent;
 }
@@ -30,7 +30,7 @@ export function download(csvData: string, filename: string, ext: string) {
 
     ext = (typeof ext !== 'undefined') ? ext : '.csv';
     filename = (typeof filename !== 'undefined') ? filename : 'intervals';
-    var blob = new Blob([csvData], { type: 'text/csv;charset=utf8;' });
+    const blob = new Blob([csvData], { type: 'text/csv;charset=utf8;' });
     downloadBlob(blob, `${filename}.${ext}`);
 }
 

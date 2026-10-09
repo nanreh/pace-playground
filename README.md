@@ -11,10 +11,11 @@ See [CONTRIBUTING.md](./CONTRIBUTING.md)
 
 ## Running Locally
 
-Pace Playground is a React application. It was created using [Create React App](https://reactjs.org/docs/create-a-new-react-app.html#create-react-app) with the TypeScript template:
-```
-yarn create react-app ch-bootstrap --template typescript
-```
-So you can run locally with: `yarn start`
+Pace Playground is a React application built with Vite. You need Node.js 24 or later, which includes npm.
 
-The other standard scripts exist also: `yarn test`, `yard build`, etc.
+```
+npm install
+npm run dev
+```
+
+The other standard scripts exist also: `npm test`, `npm run lint`, `npm run build`, etc.

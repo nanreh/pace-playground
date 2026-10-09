@@ -5,9 +5,9 @@ interface Props {
 }
 
 const TimePicker = ({ selectedTime, changeHandler } : Props) => {
-    let _hours = Math.floor(selectedTime / (60 * 60));
-    let _minutes = Math.floor((selectedTime - _hours * 60 * 60) / 60);
-    let _seconds = selectedTime % 60;
+    const _hours = Math.floor(selectedTime / (60 * 60));
+    const _minutes = Math.floor((selectedTime - _hours * 60 * 60) / 60);
+    const _seconds = selectedTime % 60;
 
     //console.log(`initialHours: ${_hours}, initialMinutes: ${_minutes}, initialSeconds: ${_seconds}`)
 
@@ -27,13 +27,13 @@ const TimePicker = ({ selectedTime, changeHandler } : Props) => {
 
     return (
         <div className="time-picker">
-            <select className={"select-css"} value={_hours} onChange={(v) => { _hours = (Number(v.target.value)); handleChange(_hours, _minutes, _seconds); }}>
+            <select className={"select-css"} value={_hours} onChange={(v) => handleChange(Number(v.target.value), _minutes, _seconds)}>
                 {optionsHour}
             </select>
-            <select className={"select-css"} value={_minutes} onChange={(v) => { _minutes = (Number(v.target.value)); handleChange(_hours, _minutes, _seconds); }}>
+            <select className={"select-css"} value={_minutes} onChange={(v) => handleChange(_hours, Number(v.target.value), _seconds)}>
                 {optionsMinute}
             </select>
-            <select className={"select-css"} value={_seconds} onChange={(v) => { _seconds = (Number(v.target.value)); handleChange(_hours, _minutes, _seconds); }}>
+            <select className={"select-css"} value={_seconds} onChange={(v) => handleChange(_hours, _minutes, Number(v.target.value))}>
                 {optionsSeconds}
             </select>
         </div>

@@ -1,4 +1,5 @@
-import { Units, RaceDistance, rate, time, metersPerMile } from './models'
+import type { Units, RaceDistance} from './models';
+import { rate, time, metersPerMile } from './models'
 
 interface Interval {
     num: number,
@@ -107,7 +108,6 @@ export function buildIntervals(distance: RaceDistance, totalTime: number, units:
     while (timeRemaining >= 1) {
         let locked = false;
         let intervalTime;
-        let intervalRate;
         const intervalDistance = intervalDistances[num];
         if (undefined === intervalDistance) {
             console.log(`UNDEFINED interval distance ${num} ${intervalDistances.length}`)
@@ -120,7 +120,7 @@ export function buildIntervals(distance: RaceDistance, totalTime: number, units:
             // this interval is free
             intervalTime = time(intervalDistance, freeRate);
         }
-        intervalRate = rate(intervalDistance, intervalTime);
+        const intervalRate = rate(intervalDistance, intervalTime);
         cumulativeTime += intervalTime;
         cumulativeDistance += intervalDistance;
         timeRemaining = timeRemaining - intervalTime;
