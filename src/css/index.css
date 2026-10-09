@@ -422,10 +422,6 @@ select {
   }
 }
 
-.titlebar {
-  width: 100%;
-  text-align: center;
-}
 .speed-meter {
   grid-column-start: 1;
   grid-column-end: 6;

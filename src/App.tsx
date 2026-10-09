@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import type { Units, RaceDistance } from "./pc/models";
 import { distances } from "./pc/models";
 import { Interval } from "./components/Interval";
@@ -13,15 +13,6 @@ import {
   StringParam,
   NumericObjectParam,
 } from "use-query-params";
-
-function getInitialIntervals(
-  distance: RaceDistance,
-  totalTime: number,
-  units: Units,
-  fixed: Map<number, number>,
-): Intervals {
-  return buildIntervals(distance, totalTime, units, fixed);
-}
 
 const App = () => {
   const paramsFromIntervals = (intervals: Intervals) => {
@@ -58,7 +49,7 @@ const App = () => {
       Object.keys(fixed).map((k) => [Number(k), fixed[k] as number]),
     );
     // a link can ask for locks that cannot be run in the goal time: drop those
-    return getInitialIntervals(
+    return buildIntervals(
       distance,
       totalTime,
       units,
@@ -70,7 +61,6 @@ const App = () => {
     setq(paramsFromIntervals(intervals));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  const intervalsRef = useRef(intervals);
 
   const [, forceUpdate] = React.useReducer((x) => x + 1, 0);
   React.useEffect(() => {
@@ -109,7 +99,6 @@ const App = () => {
         units,
         newFixedIntervals,
       );
-      intervalsRef.current = newIntervals;
       return newIntervals;
     });
   };
