@@ -302,10 +302,50 @@ select {
   }
 }
 
-.tool-button a.active {
-  pointer-events: None;
-  & > svg {
-    fill: var(--disabled-bg-color);
+/* About Burst */
+.burst-container {
+  height: 40px;
+  display: flex;
+  align-items: flex-start;
+}
+
+.about-burst {
+  display: inline-block;
+  text-decoration: none;
+  transform: rotate(-12deg);
+  transition: transform 0.2s ease;
+  &:hover {
+    transform: scale(1.1) rotate(10deg);
+  }
+  .burst-shape {
+    fill: var(--primary-color);
+    stroke: var(--secondary-color);
+    stroke-width: 1;
+    transition: fill 0.2s ease;
+  }
+  .burst-text {
+    fill: var(--text-color);
+    font-size: 21px;
+    font-weight: 900;
+    animation: burst-text-in 0.4s ease-out;
+  }
+  &:hover .burst-shape {
+    fill: var(--focus-color);
+  }
+}
+
+@keyframes burst-text-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.5) rotate(-15deg);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.1) rotate(5deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
   }
 }
 
