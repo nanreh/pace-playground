@@ -3,13 +3,23 @@ import userEvent from "@testing-library/user-event";
 import ShareButton from "./ShareButton";
 
 function setNavigator(parts: { share?: unknown; clipboard?: unknown }) {
-  Object.defineProperty(window.navigator, "share", { value: parts.share, configurable: true });
-  Object.defineProperty(window.navigator, "clipboard", { value: parts.clipboard, configurable: true });
+  Object.defineProperty(window.navigator, "share", {
+    value: parts.share,
+    configurable: true,
+  });
+  Object.defineProperty(window.navigator, "clipboard", {
+    value: parts.clipboard,
+    configurable: true,
+  });
 }
 
 describe("ShareButton", function () {
   beforeEach(function () {
-    window.history.replaceState(null, "", "/hacks/paceplayground/?d=5K&t=1200&u=km");
+    window.history.replaceState(
+      null,
+      "",
+      "/hacks/paceplayground/?d=5K&t=1200&u=km",
+    );
     window.alert = jest.fn();
     window.prompt = jest.fn();
   });
@@ -22,13 +32,19 @@ describe("ShareButton", function () {
     await userEvent.click(screen.getByRole("button", { name: "Share" }));
 
     expect(share).toHaveBeenCalledWith(
-      expect.objectContaining({ url: "http://localhost/hacks/paceplayground/?d=5K&t=1200&u=km" }),
+      expect.objectContaining({
+        url: "http://localhost/hacks/paceplayground/?d=5K&t=1200&u=km",
+      }),
     );
     expect(window.alert).not.toHaveBeenCalled();
   });
 
   it("does not complain when the share sheet is dismissed", async function () {
-    setNavigator({ share: jest.fn(async () => { throw new Error("AbortError"); }) });
+    setNavigator({
+      share: jest.fn(async () => {
+        throw new Error("AbortError");
+      }),
+    });
     render(<ShareButton />);
 
     await userEvent.click(screen.getByRole("button", { name: "Share" }));
@@ -44,12 +60,24 @@ describe("ShareButton", function () {
 
     await userEvent.click(screen.getByRole("button", { name: "Share" }));
 
-    expect(writeText).toHaveBeenCalledWith("http://localhost/hacks/paceplayground/?d=5K&t=1200&u=km");
-    await waitFor(() => expect(window.alert).toHaveBeenCalledWith("Link has been copied to clipboard!"));
+    expect(writeText).toHaveBeenCalledWith(
+      "http://localhost/hacks/paceplayground/?d=5K&t=1200&u=km",
+    );
+    await waitFor(() =>
+      expect(window.alert).toHaveBeenCalledWith(
+        "Link has been copied to clipboard!",
+      ),
+    );
   });
 
   it("shows the link to copy by hand when the clipboard is unavailable", async function () {
-    setNavigator({ clipboard: { writeText: jest.fn(async () => { throw new Error("denied"); }) } });
+    setNavigator({
+      clipboard: {
+        writeText: jest.fn(async () => {
+          throw new Error("denied");
+        }),
+      },
+    });
     render(<ShareButton />);
 
     await userEvent.click(screen.getByRole("button", { name: "Share" }));

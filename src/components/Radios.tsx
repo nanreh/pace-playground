@@ -1,4 +1,3 @@
-
 interface Props {
   id: string;
   name: string;
@@ -14,7 +13,7 @@ export const Radio = ({
   value,
   labelTxt,
   changeCb,
-  currentValue
+  currentValue,
 }: Props) => {
   return (
     <label htmlFor={id}>

@@ -1,5 +1,5 @@
-import Index from './Index';
-import About from './About';
+import Index from "./Index";
+import About from "./About";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { WindowHistoryAdapter } from "use-query-params/adapters/window";
 import { QueryParamProvider } from "use-query-params";
@@ -11,7 +11,7 @@ const Root = () => {
       <div className="app">
         <BrowserRouter basename="/hacks/paceplayground/">
           <Routes>
-            <Route path="/" element={<Index />} >
+            <Route path="/" element={<Index />}>
               {/* the splits are rendered by Index itself, so they can stay alive behind other pages */}
               <Route index element={null} />
               <Route path="about" element={<About />} />
@@ -21,6 +21,6 @@ const Root = () => {
       </div>
     </QueryParamProvider>
   );
-}
+};
 
 export default Root;
