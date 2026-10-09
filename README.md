@@ -11,11 +11,11 @@ See [CONTRIBUTING.md](./CONTRIBUTING.md)
 
 ## Running Locally
 
-Pace Playground is a React application built with Vite. You need Node.js 24 or later and yarn.
+Pace Playground is a React application built with Vite. You need Node.js 24 or later, which includes npm.
 
 ```
-yarn install
-yarn dev
+npm install
+npm run dev
 ```
 
-The other standard scripts exist also: `yarn test`, `yarn lint`, `yarn build`, etc.
+The other standard scripts exist also: `npm test`, `npm run lint`, `npm run build`, etc.
