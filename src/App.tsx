@@ -37,10 +37,13 @@ const App = () => {
   const [intervals, setIntervals] = useState(() => {
     const fixed = (null !==f && undefined !== f) ? f : {};
     const map = new Map(Object.keys(fixed).map(k => [Number(k), fixed[k] as number]));
-    const intervals = getInitialIntervals(distance, totalTime, units, map);
-    setq(paramsFromIntervals(intervals));
-    return intervals;
+    return getInitialIntervals(distance, totalTime, units, map);
   });
+  React.useEffect(() => {
+    // put the starting splits in the URL
+    setq(paramsFromIntervals(intervals));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   const intervalsRef = useRef(intervals);
 
   const [, forceUpdate] = React.useReducer((x) => x + 1, 0);
