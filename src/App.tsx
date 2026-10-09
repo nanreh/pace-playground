@@ -13,7 +13,7 @@ function getInitialIntervals(distance: RaceDistance, totalTime: number, units: U
 
 const App = () => {
   const paramsFromIntervals = (intervals: Intervals) => {
-    let fixed: { [key: string]: number } = {}
+    const fixed: { [key: string]: number } = {}
     intervals.fixed.forEach((value: number, key: number) => fixed[key] = value);
     return {
       d: intervals.distance.name,
@@ -33,9 +33,9 @@ const App = () => {
   const [distance, setDistance] = useState((d && distances[d]) ? distances[d] : distances['Marathon'])
   const [totalTime, setTotalTime] = useState<number>((t && t > 0 ? t : distance.defaultTime)) // seconds
   const [intervals, setIntervals] = useState(() => {
-    let fixed = (null !==f && undefined !== f) ? f : {};
-    let map = new Map(Object.keys(fixed).map(k => [Number(k), fixed[k] as number]));
-    let intervals = getInitialIntervals(distance, totalTime, units, map);
+    const fixed = (null !==f && undefined !== f) ? f : {};
+    const map = new Map(Object.keys(fixed).map(k => [Number(k), fixed[k] as number]));
+    const intervals = getInitialIntervals(distance, totalTime, units, map);
     setq(paramsFromIntervals(intervals));
     return intervals;
   });
@@ -51,7 +51,7 @@ const App = () => {
 
   const intervalUnlock = (num: number): void => {
     //console.log(`UNLOCK: ${num} `);
-    let newFixedIntervals = new Map(intervals.fixed);
+    const newFixedIntervals = new Map(intervals.fixed);
     newFixedIntervals.delete(num);
     const newIntervals = buildIntervals(distance, totalTime, units, newFixedIntervals);
     setq(paramsFromIntervals(newIntervals));
@@ -62,8 +62,8 @@ const App = () => {
   const faster = (iNum: number) => {
     //console.log(`LOCK: ${num} -> ${time} `);
     setIntervals(intervals => {
-      let t = intervals.intervals[iNum].time;
-      let newFixedIntervals = new Map(intervals.fixed);
+      const t = intervals.intervals[iNum].time;
+      const newFixedIntervals = new Map(intervals.fixed);
       newFixedIntervals.set(iNum, Number((t - 1).toFixed(0)));
       const newIntervals = buildIntervals(distance, totalTime, units, newFixedIntervals);
       intervalsRef.current = newIntervals;
@@ -74,8 +74,8 @@ const App = () => {
   const slower = (iNum: number) => {
     //console.log(`LOCK: ${num} -> ${time} `);
     setIntervals(intervals => {
-      let t = intervals.intervals[iNum].time;
-      let newFixedIntervals = new Map(intervals.fixed);
+      const t = intervals.intervals[iNum].time;
+      const newFixedIntervals = new Map(intervals.fixed);
       newFixedIntervals.set(iNum, Number((t + 1).toFixed(0)));
       const newIntervals = buildIntervals(distance, totalTime, units, newFixedIntervals);
       intervalsRef.current = newIntervals;
