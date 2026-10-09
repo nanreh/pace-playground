@@ -91,6 +91,63 @@ function getTotalFreeDistance(
   return result;
 }
 
+// How much faster than the goal's average pace a single split may be.
+const MAX_SPEED_UP = 2;
+
+// The fastest any split may be, in seconds per metre. It is relative to the goal,
+// so there is always room to adjust whatever goal is chosen.
+function fastestPace(distance: RaceDistance, totalTime: number): number {
+  return totalTime / distance.distance / MAX_SPEED_UP;
+}
+
+export function locksFit(
+  distance: RaceDistance,
+  totalTime: number,
+  units: Units,
+  fixedIntervals: Map<number, number>,
+): boolean {
+  const intervalDistances = getIntervalDistances(distance.distance, units);
+  const limit = fastestPace(distance, totalTime);
+  // locks are whole seconds, so compare with a little slack for rounding
+  const tooFast = (time: number, metres: number) =>
+    time < metres * limit - 1e-6;
+
+  let lockedTime = 0;
+  for (const [num, time] of fixedIntervals) {
+    if (!Number.isInteger(num) || num < 0 || num >= intervalDistances.length) {
+      return false;
+    }
+    if (!Number.isFinite(time) || tooFast(time, intervalDistances[num])) {
+      return false;
+    }
+    lockedTime += time;
+  }
+
+  const freeDistance = getTotalFreeDistance(intervalDistances, fixedIntervals);
+  // less than a metre is the rounding left over in distances such as 5M, not a split
+  if (freeDistance < 1) {
+    return false;
+  }
+  return !tooFast(totalTime - lockedTime, freeDistance);
+}
+
+export function keepLocksThatFit(
+  distance: RaceDistance,
+  totalTime: number,
+  units: Units,
+  fixedIntervals: Map<number, number>,
+): Map<number, number> {
+  const kept = new Map<number, number>();
+  const inOrder = Array.from(fixedIntervals).sort((l, r) => l[0] - r[0]);
+  for (const [num, time] of inOrder) {
+    kept.set(num, time);
+    if (!locksFit(distance, totalTime, units, kept)) {
+      kept.delete(num);
+    }
+  }
+  return kept;
+}
+
 export function buildIntervals(
   distance: RaceDistance,
   totalTime: number,
@@ -124,15 +181,10 @@ export function buildIntervals(
   let timeRemaining = totalTime;
   let cumulativeTime = 0;
   let cumulativeDistance = 0;
-  while (timeRemaining >= 1) {
+  while (timeRemaining >= 1 && num < intervalDistances.length) {
     let locked = false;
     let intervalTime;
     const intervalDistance = intervalDistances[num];
-    if (undefined === intervalDistance) {
-      console.log(
-        `UNDEFINED interval distance ${num} ${intervalDistances.length}`,
-      );
-    }
     if (fixedIntervals.has(num)) {
       // this interval is locked
       locked = true;

@@ -3,7 +3,7 @@ import type { Units, RaceDistance } from "./pc/models";
 import { distances } from "./pc/models";
 import { Interval } from "./components/Interval";
 import type { Intervals } from "./pc/pacecalc";
-import { buildIntervals } from "./pc/pacecalc";
+import { buildIntervals, keepLocksThatFit, locksFit } from "./pc/pacecalc";
 import DistanceTimeSplits from "./components/DistanceTimeSplits";
 import ExportShare from "./components/ExportShare";
 import history from "./pc/history";
@@ -57,7 +57,13 @@ const App = () => {
     const map = new Map(
       Object.keys(fixed).map((k) => [Number(k), fixed[k] as number]),
     );
-    return getInitialIntervals(distance, totalTime, units, map);
+    // a link can ask for locks that cannot be run in the goal time: drop those
+    return getInitialIntervals(
+      distance,
+      totalTime,
+      units,
+      keepLocksThatFit(distance, totalTime, units, map),
+    );
   });
   React.useEffect(() => {
     // put the starting splits in the URL
@@ -87,12 +93,16 @@ const App = () => {
     setIntervals(newIntervals);
   };
 
-  // this is called anynchronously during long press
-  const faster = (iNum: number) => {
+  // Lock a split one second faster or slower. Called repeatedly during a long press.
+  const nudge = (iNum: number, seconds: number) => {
     setIntervals((intervals) => {
       const t = intervals.intervals[iNum].time;
       const newFixedIntervals = new Map(intervals.fixed);
-      newFixedIntervals.set(iNum, Number((t - 1).toFixed(0)));
+      newFixedIntervals.set(iNum, Number((t + seconds).toFixed(0)));
+      // at the limit of what the other splits can absorb, the press has no further effect
+      if (!locksFit(distance, totalTime, units, newFixedIntervals)) {
+        return intervals;
+      }
       const newIntervals = buildIntervals(
         distance,
         totalTime,
@@ -103,22 +113,8 @@ const App = () => {
       return newIntervals;
     });
   };
-  // this is called anynchronously during long press
-  const slower = (iNum: number) => {
-    setIntervals((intervals) => {
-      const t = intervals.intervals[iNum].time;
-      const newFixedIntervals = new Map(intervals.fixed);
-      newFixedIntervals.set(iNum, Number((t + 1).toFixed(0)));
-      const newIntervals = buildIntervals(
-        distance,
-        totalTime,
-        units,
-        newFixedIntervals,
-      );
-      intervalsRef.current = newIntervals;
-      return newIntervals;
-    });
-  };
+  const faster = (iNum: number) => nudge(iNum, -1);
+  const slower = (iNum: number) => nudge(iNum, 1);
 
   const done = (): void => {
     setq(paramsFromIntervals(intervals));

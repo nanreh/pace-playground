@@ -1,4 +1,4 @@
-import { buildIntervals } from "./pacecalc";
+import { buildIntervals, keepLocksThatFit, locksFit } from "./pacecalc";
 import type { Units } from "./models";
 import { distances, metersPerMile } from "./models";
 
@@ -179,5 +179,178 @@ describe("buildIntervals", () => {
         ).toBeLessThan(rounding);
       },
     );
+  });
+});
+
+describe("locksFit", () => {
+  // 5K in 20:00 averages 4:00 per km, so no split may be faster than 2:00 (120 s).
+  const fiveK = distances["5K"];
+  const fits = (locks: [number, number][]) =>
+    locksFit(fiveK, 1200, "km", new Map(locks));
+
+  test("no locks fit", () => {
+    expect(fits([])).toBe(true);
+  });
+
+  test("an ordinary lock fits", () => {
+    expect(fits([[0, 300]])).toBe(true);
+  });
+
+  test("a lock may slow a split until the others are twice as fast as average", () => {
+    // the other four need at least 4 x 120 = 480 s, leaving 720 s
+    expect(fits([[0, 720]])).toBe(true);
+    expect(fits([[0, 721]])).toBe(false);
+  });
+
+  test("a lock may not be more than twice as fast as average", () => {
+    expect(fits([[0, 120]])).toBe(true);
+    expect(fits([[0, 119]])).toBe(false);
+    expect(fits([[0, 0]])).toBe(false);
+    expect(fits([[0, -10]])).toBe(false);
+  });
+
+  test("a lock longer than the whole race does not fit", () => {
+    expect(fits([[0, 1300]])).toBe(false);
+  });
+
+  test("at least one split has to stay unlocked", () => {
+    expect(
+      fits([
+        [0, 240],
+        [1, 240],
+        [2, 240],
+        [3, 240],
+      ]),
+    ).toBe(true);
+    expect(
+      fits([
+        [0, 240],
+        [1, 240],
+        [2, 240],
+        [3, 240],
+        [4, 240],
+      ]),
+    ).toBe(false);
+  });
+
+  test("a lock on a split that does not exist does not fit", () => {
+    expect(fits([[5, 240]])).toBe(false);
+    expect(fits([[-1, 240]])).toBe(false);
+    expect(fits([[1.5, 240]])).toBe(false);
+  });
+
+  test("a lock that is not a number does not fit", () => {
+    expect(fits([[0, NaN]])).toBe(false);
+    expect(fits([[0, Infinity]])).toBe(false);
+  });
+
+  test("the leftover fraction of a metre in 5M does not count as an unlocked split", () => {
+    // 5M is defined as 8047 m, a fraction over five miles
+    const allFive: [number, number][] = [0, 1, 2, 3, 4].map((n) => [n, 420]);
+    expect(locksFit(distances["5M"], 2100, "mi", new Map(allFive))).toBe(false);
+    expect(
+      locksFit(distances["5M"], 2100, "mi", new Map(allFive.slice(1))),
+    ).toBe(true);
+  });
+
+  test.each([
+    ["faster than the world record", 600],
+    ["the world record itself", distances["5K"].worldRecord],
+    ["very slow", 3600],
+  ])("the limits scale with the goal: %s", (_name, totalTime) => {
+    const even = totalTime / 5;
+    const fitsGoal = (locks: [number, number][]) =>
+      locksFit(fiveK, totalTime, "km", new Map(locks));
+
+    // a split can always be moved a little either way
+    expect(fitsGoal([[0, Math.round(even * 1.2)]])).toBe(true);
+    expect(fitsGoal([[0, Math.round(even * 0.8)]])).toBe(true);
+    // and never to less than half the average
+    expect(fitsGoal([[0, Math.floor(even * 0.5) - 1]])).toBe(false);
+  });
+
+  test("a goal of no time at all accepts no locks", () => {
+    expect(locksFit(fiveK, 0, "km", new Map())).toBe(true);
+    expect(locksFit(fiveK, 0, "km", new Map([[0, 10]]))).toBe(false);
+  });
+});
+
+describe("keepLocksThatFit", () => {
+  const fiveK = distances["5K"];
+  const keep = (locks: [number, number][]) =>
+    Array.from(keepLocksThatFit(fiveK, 1200, "km", new Map(locks)));
+
+  test("keeps locks that fit", () => {
+    expect(
+      keep([
+        [0, 300],
+        [4, 200],
+      ]),
+    ).toEqual([
+      [0, 300],
+      [4, 200],
+    ]);
+  });
+
+  test("drops a lock that cannot be run", () => {
+    expect(keep([[0, 1300]])).toEqual([]);
+    expect(keep([[0, 0]])).toEqual([]);
+    expect(keep([[9, 240]])).toEqual([]);
+  });
+
+  test("drops only the locks that do not fit alongside the earlier ones", () => {
+    // after the first lock, a second 500 would leave 200 s for three km: too fast
+    expect(
+      keep([
+        [0, 500],
+        [1, 500],
+        [2, 150],
+      ]),
+    ).toEqual([
+      [0, 500],
+      [2, 150],
+    ]);
+  });
+
+  test("leaves one split unlocked when every split is locked", () => {
+    const all: [number, number][] = [0, 1, 2, 3, 4].map((n) => [n, 240]);
+    expect(keep(all)).toEqual(all.slice(0, 4));
+  });
+
+  test("what it keeps can always be built without losing a split", () => {
+    const awkward: [number, number][][] = [
+      [[0, 1300]],
+      [
+        [0, 200],
+        [1, 200],
+        [2, 200],
+        [3, 200],
+        [4, 200],
+      ],
+      [
+        [0, 300],
+        [1, 300],
+        [2, 300],
+        [3, 300],
+      ],
+      [[0, 0]],
+    ];
+    for (const locks of awkward) {
+      const result = buildIntervals(fiveK, 1200, "km", new Map(keep(locks)));
+      expect(result.intervals).toHaveLength(5);
+      result.intervals.forEach((i) =>
+        expect(i.time).toBeGreaterThanOrEqual(120),
+      );
+      expect(sum(result.intervals.map((i) => i.time))).toBeCloseTo(1200, 0);
+    }
+  });
+});
+
+describe("buildIntervals with locks that do not fit", () => {
+  test("does not fail, even though the result is not meaningful", () => {
+    const all = new Map([0, 1, 2, 3, 4].map((n) => [n, 200]));
+    expect(() =>
+      buildIntervals(distances["5K"], 1200, "km", all),
+    ).not.toThrow();
   });
 });
