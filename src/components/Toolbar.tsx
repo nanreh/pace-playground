@@ -8,7 +8,7 @@ const Toolbar = () => {
         <div className="tools">
           <div className="tools-start">
             <div className="burst-container">
-              <AboutBurst size={80} />
+              <AboutBurst size={92} />
             </div>
           </div>
           <div className="tools-middle">
